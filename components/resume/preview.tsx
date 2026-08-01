@@ -18,7 +18,7 @@ import type {
 const PAGE_WIDTH = 794
 const PAGE_HEIGHT = 1123
 
-type Variant = "modern" | "classic" | "minimal"
+type Variant = "modern" | "classic"
 
 function hasContent(key: SectionKey, data: ResumeData): boolean {
   switch (key) {
@@ -58,16 +58,6 @@ function SectionHeading({
       </h2>
     )
   }
-  if (variant === "minimal") {
-    return (
-      <h2
-        className="mb-2 text-[11px] font-bold tracking-[0.14em] uppercase"
-        style={{ color: accent }}
-      >
-        {title}
-      </h2>
-    )
-  }
   return (
     <h2
       className="mb-3 pb-1.5 text-[11px] font-bold tracking-[0.16em] uppercase"
@@ -82,15 +72,6 @@ function ContactLine({ data, variant }: { data: ResumeData["personal"]; variant:
   const parts = [data.email, data.phone, data.location, data.website].filter((p) => p.trim())
   const text = parts.join(variant === "classic" ? "  |  " : "  ·  ")
   if (!text) return null
-  if (variant === "minimal") {
-    return (
-      <div className="mt-1 text-right text-[11px] leading-relaxed" style={{ color: "#4b5563" }}>
-        {parts.map((part, index) => (
-          <div key={index}>{part}</div>
-        ))}
-      </div>
-    )
-  }
   return (
     <p className="mt-2 text-[12px]" style={{ color: "#4b5563" }}>
       {text}
@@ -316,37 +297,23 @@ function Template({ state }: { state: ResumeState }) {
 
   const header = (
     <header className="mb-6">
-      {variant === "minimal" ? (
-        <div className="flex items-start justify-between gap-6">
-          <div>
-            <h1 className="text-[26px] leading-tight font-bold" style={{ color: "#111827" }}>
-              {data.personal.fullName}
-            </h1>
-            <p className="mt-0.5 text-[13px] font-medium" style={{ color: accent }}>
-              {data.personal.jobTitle}
-            </p>
-          </div>
+      <div className={variant === "classic" ? "" : "text-center"}>
+        <h1
+          className="text-[27px] leading-tight font-bold"
+          style={{ color: "#111827", fontFamily: variant === "classic" ? "var(--font-heading)" : undefined }}
+        >
+          {data.personal.fullName}
+        </h1>
+        <p
+          className="mt-1 text-[14px] font-medium"
+          style={{ color: accent, fontFamily: variant === "classic" ? "var(--font-heading)" : undefined }}
+        >
+          {data.personal.jobTitle}
+        </p>
+        <div className={variant === "classic" ? "mt-1" : ""}>
           <ContactLine data={data.personal} variant={variant} />
         </div>
-      ) : (
-        <div className={variant === "classic" ? "" : "text-center"}>
-          <h1
-            className="text-[27px] leading-tight font-bold"
-            style={{ color: "#111827", fontFamily: variant === "classic" ? "var(--font-heading)" : undefined }}
-          >
-            {data.personal.fullName}
-          </h1>
-          <p
-            className="mt-1 text-[14px] font-medium"
-            style={{ color: accent, fontFamily: variant === "classic" ? "var(--font-heading)" : undefined }}
-          >
-            {data.personal.jobTitle}
-          </p>
-          <div className={variant === "classic" ? "mt-1" : ""}>
-            <ContactLine data={data.personal} variant={variant} />
-          </div>
-        </div>
-      )}
+      </div>
     </header>
   )
 
@@ -356,19 +323,12 @@ function Template({ state }: { state: ResumeState }) {
       style={{
         width: PAGE_WIDTH,
         minHeight: PAGE_HEIGHT,
-        padding: variant === "minimal" ? "44px 52px 44px 60px" : "52px 60px",
+        padding: "52px 60px",
         position: "relative",
         color: "#1f2937",
         fontFamily: variant === "classic" ? "var(--font-heading)" : "var(--font-sans)",
       }}
     >
-      {variant === "minimal" ? (
-        <div
-          aria-hidden
-          className="absolute inset-y-0 left-0 w-2"
-          style={{ backgroundColor: accent }}
-        />
-      ) : null}
       {header}
       {order.map((key) => (
         <section key={key} className="mb-5 last:mb-0">

@@ -33,11 +33,6 @@ export const TEMPLATES: TemplateDef[] = [
     label: "Classic",
     description: "Serif typography with a traditional, professional structure.",
   },
-  {
-    id: "minimal",
-    label: "Minimal",
-    description: "Compact and light with a slim accent bar on the left.",
-  },
 ]
 
 export const TEMPLATE_MAP: Record<TemplateId, TemplateDef> = TEMPLATES.reduce(

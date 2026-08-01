@@ -471,5 +471,4 @@ export function ResumeBuilder() {
 const TEMPLATE_LABELS: Record<TemplateId, string> = {
   modern: "Modern",
   classic: "Classic",
-  minimal: "Minimal",
 }

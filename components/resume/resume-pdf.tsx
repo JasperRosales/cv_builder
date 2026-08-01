@@ -15,7 +15,7 @@ import type {
   WorkEntry,
 } from "@/lib/types"
 
-type Variant = "modern" | "classic" | "minimal"
+type Variant = "modern" | "classic"
 
 function hasContent(key: SectionKey, data: ResumeData): boolean {
   switch (key) {
@@ -56,19 +56,9 @@ function createStyles(variant: Variant, accent: string) {
       color: "#1f2937",
       fontFamily: serif ? "Times-Roman" : "Helvetica",
     },
-    accentBar: {
-      position: "absolute",
-      left: 0,
-      top: 0,
-      bottom: 0,
-      width: 6,
-      backgroundColor: accent,
-    },
     header: {
       marginBottom: 18,
-      ...(variant === "minimal"
-        ? { flexDirection: "row", justifyContent: "space-between" }
-        : { alignItems: "center", textAlign: "center" }),
+      ...(variant === "classic" ? {} : { alignItems: "center" }),
     },
     name: {
       fontSize: 24,
@@ -77,7 +67,7 @@ function createStyles(variant: Variant, accent: string) {
       fontFamily: serif ? "Times-Roman" : "Helvetica",
     },
     title: {
-      marginTop: 2,
+      marginTop: 16,
       fontSize: 12.5,
       fontWeight: "medium",
       color: accent,
@@ -87,12 +77,6 @@ function createStyles(variant: Variant, accent: string) {
       marginTop: 6,
       fontSize: 8.5,
       color: "#4b5563",
-    },
-    contactRight: {
-      fontSize: 8.5,
-      color: "#4b5563",
-      textAlign: "right",
-      maxWidth: 240,
     },
     section: {
       marginBottom: 14,
@@ -104,13 +88,9 @@ function createStyles(variant: Variant, accent: string) {
       textTransform: "uppercase",
       letterSpacing: 1.1,
       marginBottom: 6,
-      ...(variant === "minimal"
-        ? {}
-        : {
-            borderBottomWidth: variant === "modern" ? 1.5 : 0.6,
-            borderBottomColor: variant === "modern" ? accent : "#cbd5e1",
-            paddingBottom: 3,
-          }),
+      borderBottomWidth: variant === "modern" ? 1.5 : 0.6,
+      borderBottomColor: variant === "modern" ? accent : "#cbd5e1",
+      paddingBottom: 3,
     },
     row: {
       flexDirection: "row",
@@ -325,24 +305,10 @@ export function ResumePdf({ state }: { state: ResumeState }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {variant === "minimal" ? <View style={styles.accentBar} fixed /> : null}
         <View style={styles.header}>
-          <View>
-            <Text style={styles.name}>{data.personal.fullName}</Text>
-            <Text style={styles.title}>{data.personal.jobTitle}</Text>
-            {variant === "minimal" ? null : (
-              <Text style={styles.contact}>{contactParts}</Text>
-            )}
-          </View>
-          {variant === "minimal" && contactParts ? (
-            <View style={styles.contactRight}>
-              {[data.personal.email, data.personal.phone, data.personal.location, data.personal.website]
-                .filter((part) => part.trim())
-                .map((part, index) => (
-                  <Text key={index}>{part}</Text>
-                ))}
-            </View>
-          ) : null}
+          <Text style={styles.name}>{data.personal.fullName}</Text>
+          <Text style={styles.title}>{data.personal.jobTitle}</Text>
+          {contactParts ? <Text style={styles.contact}>{contactParts}</Text> : null}
         </View>
         {order.map((key) => (
           <View key={key} style={styles.section}>

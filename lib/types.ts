@@ -75,7 +75,7 @@ export interface ResumeData {
   other: OtherGroup[]
 }
 
-export type TemplateId = "modern" | "classic" | "minimal"
+export type TemplateId = "modern" | "classic"
 
 export type AccentId =
   | "slate"
